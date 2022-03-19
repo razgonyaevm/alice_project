@@ -99,10 +99,12 @@ def handle_dialog(req, res, text, coin=0):
         'я куплю'
     ]:
         # Пользователь согласился, прощаемся.
-        res['response']['text'] = f'{text.capitalize()} можно найти на Яндекс.Маркете!'
         if coin == 0:
+            res['response']['text'] = f'Слона можно найти на Яндекс.Маркете!'
+            req['session']['new'] = True
             handle_dialog(req, res, 'кролика', 1)
         else:
+            res['response']['text'] = 'Кролика можно найти на Яндекс.Маркете!'
             res['response']['end_session'] = True
         return
 
