@@ -105,6 +105,7 @@ def handle_dialog(req, res, text):
             req['session']['new'] = True
         else:
             res['response']['text'] = 'Кролика можно найти на Яндекс.Маркете!'
+            req['session']['new'] = False
             res['response']['end_session'] = True
         return
 
@@ -134,7 +135,7 @@ def get_suggests(user_id, text):
     if len(suggests) < 2:
         suggests.append({
             "title": "Ладно",
-            "url": f"https://market.yandex.ru/search?text={text[-1]}",
+            "url": f"https://market.yandex.ru/search?text={text[:-1]}",
             "hide": True
         })
 
