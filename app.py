@@ -79,7 +79,7 @@ def handle_dialog(req, res, text, coin=0):
         # Заполняем текст ответа
         res['response']['text'] = f'Привет! Купи {text}!'
         # Получим подсказки
-        res['response']['buttons'] = get_suggests(user_id)
+        res['response']['buttons'] = get_suggests(user_id, text)
         return
 
     # Сюда дойдем только, если пользователь не новый, 
@@ -109,6 +109,7 @@ def handle_dialog(req, res, text, coin=0):
     res['response']['text'] = \
         f"Все говорят '{req['request']['original_utterance']}', а ты купи {text}!"
     res['response']['buttons'] = get_suggests(user_id, text)
+    return
 
 
 # Функция возвращает две подсказки для ответа.
