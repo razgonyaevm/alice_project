@@ -106,6 +106,7 @@ def handle_dialog(req, res):
             res['response']['end_session'] = True
         else:
             text = 'кролика'
+            res['response']['text'] = f'Привет! Купи {text}!'
             req['session']['new'] = True
         return
 
