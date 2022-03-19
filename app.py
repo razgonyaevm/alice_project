@@ -54,7 +54,6 @@ def main():
     # Она сформирует оставшиеся поля JSON, которые отвечают
     # непосредственно за ведение диалога
     handle_dialog(request.json, response, 'слона')
-    handle_dialog(request.json, response, 'кролика')
 
     logging.info(f'Response:  {response!r}')
 
@@ -103,6 +102,7 @@ def handle_dialog(req, res, text):
         if text == 'слона':
             res['response']['text'] = f'Слона можно найти на Яндекс.Маркете!'
             req['session']['new'] = True
+            text = 'кролика'
         else:
             res['response']['text'] = 'Кролика можно найти на Яндекс.Маркете!'
             req['session']['new'] = False
