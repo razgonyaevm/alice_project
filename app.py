@@ -53,7 +53,7 @@ def main():
     # Отправляем request.json и response в функцию handle_dialog. 
     # Она сформирует оставшиеся поля JSON, которые отвечают
     # непосредственно за ведение диалога
-    handle_dialog(request.json, response)
+    handle_dialog(request.json, response, 'слона')
 
     logging.info(f'Response:  {response!r}')
 
@@ -61,7 +61,7 @@ def main():
     return json.dumps(response)
 
 
-def handle_dialog(req, res):
+def handle_dialog(req, res, text, coin=0):
     user_id = req['session']['user_id']
 
     if req['session']['new']:
@@ -73,11 +73,11 @@ def handle_dialog(req, res):
             'suggests': [
                 "Не хочу.",
                 "Не буду.",
-                "Отстань!",
+                "Отстань!"
             ]
         }
         # Заполняем текст ответа
-        res['response']['text'] = 'Привет! Купи слона!'
+        res['response']['text'] = f'Привет! Купи {text}!'
         # Получим подсказки
         res['response']['buttons'] = get_suggests(user_id)
         return
@@ -99,18 +99,20 @@ def handle_dialog(req, res):
         'я куплю'
     ]:
         # Пользователь согласился, прощаемся.
-        res['response']['text'] = 'Слона можно найти на Яндекс.Маркете!'
+        res['response']['text'] = f'{text.capitalize()} можно найти на Яндекс.Маркете!'
+        if coin == 0:
+            handle_dialog(req, res, 'кролика', 1)
         res['response']['end_session'] = True
         return
 
     # Если нет, то убеждаем его купить слона!
     res['response']['text'] = \
-        f"Все говорят '{req['request']['original_utterance']}', а ты купи слона!"
-    res['response']['buttons'] = get_suggests(user_id)
+        f"Все говорят '{req['request']['original_utterance']}', а ты купи {text}!"
+    res['response']['buttons'] = get_suggests(user_id, text)
 
 
 # Функция возвращает две подсказки для ответа.
-def get_suggests(user_id):
+def get_suggests(user_id, text):
     session = sessionStorage[user_id]
 
     # Выбираем две первые подсказки из массива.
@@ -128,7 +130,7 @@ def get_suggests(user_id):
     if len(suggests) < 2:
         suggests.append({
             "title": "Ладно",
-            "url": "https://market.yandex.ru/search?text=слон",
+            "url": f"https://market.yandex.ru/search?text={text[-1]}",
             "hide": True
         })
 
