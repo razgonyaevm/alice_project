@@ -54,6 +54,7 @@ def main():
     # Она сформирует оставшиеся поля JSON, которые отвечают
     # непосредственно за ведение диалога
     handle_dialog(request.json, response, 'слона')
+    handle_dialog(request.json, response, 'кролика')
 
     logging.info(f'Response:  {response!r}')
 
@@ -61,7 +62,7 @@ def main():
     return json.dumps(response)
 
 
-def handle_dialog(req, res, text, coin=0):
+def handle_dialog(req, res, text):
     user_id = req['session']['user_id']
 
     if req['session']['new']:
@@ -99,10 +100,9 @@ def handle_dialog(req, res, text, coin=0):
         'я куплю'
     ]:
         # Пользователь согласился, прощаемся.
-        if coin == 0:
+        if text == 'слона':
             res['response']['text'] = f'Слона можно найти на Яндекс.Маркете!'
             req['session']['new'] = True
-            handle_dialog(req, res, 'кролика', 1)
         else:
             res['response']['text'] = 'Кролика можно найти на Яндекс.Маркете!'
             res['response']['end_session'] = True
