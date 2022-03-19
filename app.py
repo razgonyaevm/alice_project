@@ -102,7 +102,8 @@ def handle_dialog(req, res, text, coin=0):
         res['response']['text'] = f'{text.capitalize()} можно найти на Яндекс.Маркете!'
         if coin == 0:
             handle_dialog(req, res, 'кролика', 1)
-        res['response']['end_session'] = True
+        else:
+            res['response']['end_session'] = True
         return
 
     # Если нет, то убеждаем его купить слона!
